@@ -91,13 +91,13 @@ describe('App Component', () => {
     fireEvent.click(submitButton);
   
     // Snackbar should appear with an error message
-    // await waitFor(() => {
-    //   screen.debug(); 
-    //   expect(screen.getByRole('alert')).toHaveTextContent('Maximum number of symbols (5) reached');
-    // });
+    await waitFor(() => {
+      screen.debug(); 
+      expect(screen.getByRole('alert')).toHaveTextContent('Maximum number of symbols (5) reached');
+    });
   
     // Close Snackbar
-    // fireEvent.click(screen.getByRole('button', { name: /close/i }));
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
   
     // Snackbar should disappear
     await waitFor(() => {

@@ -99,13 +99,10 @@ describe('App Component', () => {
     // Close Snackbar
     fireEvent.click(screen.getByRole('button', { name: /close/i }));
   
-    await waitFor(() => {
-      expect(screen.queryByRole('alert')).toBeNull();
-    });
-
+    
     // Snackbar should disappear
     await waitFor(() => {
       expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    }, { timeout: 2000 });
+    });
   });
 });

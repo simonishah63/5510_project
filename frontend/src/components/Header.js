@@ -13,6 +13,7 @@ export const Header = () => {
         background: 'linear-gradient(45deg, #1e3c72 30%, #2a5298 90%)',
         boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
       }}
+      data-testid="header"
     >
       <Toolbar>
         <ShowChartIcon sx={{ mr: 2, fontSize: 28 }} />

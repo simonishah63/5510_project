@@ -19,14 +19,10 @@ export const StockInput = ({ onSubmit, loading }) => {
   const [symbols, setSymbols] = useState([]);
   const [error, setError] = useState('');
 
-  const validateSymbol = (symbol) => {
-    const symbolRegex = /^[A-Z]{1,5}$/;
-    return symbolRegex.test(symbol);
-  };
+  const validateSymbol = (symbol) => /^[A-Z]{1,5}$/.test(symbol);
 
   const handleInputChange = (event) => {
-    const value = event.target.value.toUpperCase();
-    setInputValue(value);
+    setInputValue(event.target.value.toUpperCase());
     setError('');
   };
 
@@ -59,14 +55,12 @@ export const StockInput = ({ onSubmit, loading }) => {
       return;
     }
 
-    setSymbols([...symbols, symbol]);
+    setSymbols((prev) => [...prev, symbol]);
     setInputValue('');
-    setError('');
   };
 
   const removeSymbol = (symbolToRemove) => {
-    setSymbols(symbols.filter(symbol => symbol !== symbolToRemove));
-    setError('');
+    setSymbols((prev) => prev.filter(symbol => symbol !== symbolToRemove));
   };
 
   const handleSubmit = () => {
@@ -78,22 +72,12 @@ export const StockInput = ({ onSubmit, loading }) => {
   };
 
   return (
-    <Paper 
-      elevation={3} 
-      sx={{ 
-        p: 3, 
-        mb: 3,
-        bgcolor: 'background.paper',
-        transition: 'transform 0.2s',
-        '&:hover': {
-          transform: 'translateY(-2px)'
-        }
-      }}
-    >
+    <Paper elevation={3} sx={{ p: 3, mb: 3, bgcolor: 'background.paper', transition: 'transform 0.2s',
+      '&:hover': {
+        transform: 'translateY(-2px)'
+      } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h6">
-          Enter Stock Symbols
-        </Typography>
+        <Typography variant="h6">Enter Stock Symbols</Typography>
         <Tooltip title="Enter stock symbols (e.g., AAPL for Apple Inc.) to analyze and predict their prices. Add up to 5 symbols." arrow>
           <InfoOutlinedIcon sx={{ ml: 1, color: 'text.secondary', cursor: 'help' }} />
         </Tooltip>
@@ -101,6 +85,7 @@ export const StockInput = ({ onSubmit, loading }) => {
 
       <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
         <TextField
+          data-testid="stock-input"
           fullWidth
           variant="outlined"
           placeholder="Enter stock symbol (e.g., AAPL)"
@@ -110,15 +95,14 @@ export const StockInput = ({ onSubmit, loading }) => {
           disabled={loading}
           error={!!error}
           helperText={error}
-          InputProps={{
-            sx: { textTransform: 'uppercase' }
-          }}
+          InputProps={{ sx: { textTransform: 'uppercase' } }}
         />
         <Button
           variant="contained"
           onClick={addSymbol}
           disabled={!inputValue.trim() || loading}
           startIcon={<AddIcon />}
+          data-testid="stock-add-button"
         >
           Add
         </Button>
@@ -150,6 +134,7 @@ export const StockInput = ({ onSubmit, loading }) => {
         onClick={handleSubmit}
         disabled={symbols.length === 0 || loading}
         startIcon={loading ? <CircularProgress size={20} /> : <SearchIcon />}
+        data-testid="stock-submit"
         sx={{
           height: '48px',
           transition: 'all 0.2s',

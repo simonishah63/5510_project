@@ -50,17 +50,17 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const [results, setResults] = useState(null);
+  // const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-  const [currentSymbol, setCurrentSymbol] = useState(null);
+  // const [currentSymbol, setCurrentSymbol] = useState(null);
 
   const handleStockSubmit = async (symbols) => {
     setLoading(true);
-    setError(null);
-    setResults(null);
-    setCurrentSymbol(symbols[0]);
+    // setError(null);
+    // setResults(null);
+    // setCurrentSymbol(symbols[0]);
     try {
       setSnackbar({
         open: true,
@@ -89,7 +89,7 @@ function App() {
         throw new Error('No valid predictions could be generated for the provided symbols');
       }
       
-      setResults(data);
+      // setResults(data);
       
       // Show success message
       setSnackbar({
@@ -99,7 +99,7 @@ function App() {
       });
       
     } catch (err) {
-      setError(err.message);
+      // setError(err.message);
       setSnackbar({
         open: true,
         message: `Error: ${err.message}`,
@@ -107,7 +107,7 @@ function App() {
       });
     } finally {
       setLoading(false);
-      setCurrentSymbol(null);
+      // setCurrentSymbol(null);
     }
   };
 

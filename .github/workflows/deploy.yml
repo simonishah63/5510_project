@@ -39,6 +39,7 @@ jobs:
       run: npm test
       
     - name: Run tests
+      working-directory: frontend
       run: npx jest --coverage
 
     - name: Upload coverage reports to Codecov

@@ -4,6 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { StockInput } from './components/StockInput';
+import { ResultsDisplay } from './components/ResultsDisplay';
 import { Header } from './components/Header';
 import { Alert, Snackbar } from '@mui/material';
 
@@ -50,17 +51,19 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  // const [results, setResults] = useState(null);
+  const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-  // const [currentSymbol, setCurrentSymbol] = useState(null);
+  const [currentSymbol, setCurrentSymbol] = useState(null);
 
   const handleStockSubmit = async (symbols) => {
     setLoading(true);
-    // setError(null);
-    // setResults(null);
-    // setCurrentSymbol(symbols[0]);
+    setError(null);
+    setResults(null);
+    // For progress tracking, we'll use the first symbol if multiple are provided
+    setCurrentSymbol(symbols[0]);
+    
     try {
       setSnackbar({
         open: true,
@@ -68,7 +71,7 @@ function App() {
         severity: 'info'
       });
 
-      const response = await fetch('http://localhost:5000/predict', {
+      const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +92,7 @@ function App() {
         throw new Error('No valid predictions could be generated for the provided symbols');
       }
       
-      // setResults(data);
+      setResults(data);
       
       // Show success message
       setSnackbar({
@@ -99,7 +102,7 @@ function App() {
       });
       
     } catch (err) {
-      // setError(err.message);
+      setError(err.message);
       setSnackbar({
         open: true,
         message: `Error: ${err.message}`,
@@ -107,7 +110,7 @@ function App() {
       });
     } finally {
       setLoading(false);
-      // setCurrentSymbol(null);
+      setCurrentSymbol(null);
     }
   };
 
@@ -133,6 +136,12 @@ function App() {
         <Container maxWidth="lg">
           <Box sx={{ my: 4 }}>
             <StockInput onSubmit={handleStockSubmit} loading={loading} />
+            <ResultsDisplay 
+              results={results} 
+              loading={loading} 
+              error={error}
+              symbol={currentSymbol}
+            />
           </Box>
         </Container>
         <Snackbar 

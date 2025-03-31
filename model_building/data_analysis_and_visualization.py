@@ -24,7 +24,7 @@ def create_subplot_layout(n):
         rows = math.ceil(n / cols)
         return rows, cols
 
-def plot_closing_prices(company_list, tech_list):
+def plot_closing_prices(company_list, stock_list):
     """Plot historical view of closing prices"""
     if not company_list:
         print("No data available for plotting closing prices")
@@ -44,7 +44,7 @@ def plot_closing_prices(company_list, tech_list):
     plt.savefig('results/closing_prices.png')
     plt.close()
 
-def plot_volume(company_list, tech_list):
+def plot_volume(company_list, stock_list):
     """Plot volume of sales"""
     if not company_list:
         print("No data available for plotting volume")
@@ -111,15 +111,15 @@ def analyze_daily_returns(company_list):
     plt.savefig('results/daily_returns.png')
     plt.close()
 
-def plot_correlation_analysis(tech_list):
+def plot_correlation_analysis(stock_list):
     """Analyze correlation between stocks"""
-    if len(tech_list) < 2:
+    if len(stock_list) < 2:
         print("Need at least 2 stocks for correlation analysis")
         return pd.DataFrame()  # Return empty DataFrame if not enough stocks
         
     try:
         # Get closing prices for all stocks
-        closing_df = yf.download(tech_list, 
+        closing_df = yf.download(stock_list, 
                                start=datetime.now() - pd.DateOffset(years=1),
                                end=datetime.now(),
                                progress=False)['Adj Close']
@@ -146,7 +146,7 @@ def plot_correlation_analysis(tech_list):
         print(f"Error in correlation analysis: {str(e)}")
         return pd.DataFrame()
 
-def plot_candlestick_charts(company_list, tech_list):
+def plot_candlestick_charts(company_list, stock_list):
     """Plot candlestick charts"""
     if not MPLFINANCE_AVAILABLE:
         print("mplfinance is not available. Skipping candlestick charts.")
@@ -166,7 +166,7 @@ def plot_candlestick_charts(company_list, tech_list):
         except Exception as e:
             print(f"Error creating candlestick chart for {symbol}: {str(e)}")
 
-def main_analysis(company_list, tech_list):
+def main_analysis(company_list, stock_list):
     """Main function to run all analyses"""
     try:
         # Create results directory if it doesn't exist
@@ -174,10 +174,10 @@ def main_analysis(company_list, tech_list):
         os.makedirs('results', exist_ok=True)
         
         print("\nGenerating analysis plots...")
-        plot_closing_prices(company_list, tech_list)
+        plot_closing_prices(company_list, stock_list)
         print("- Closing prices plot saved")
         
-        plot_volume(company_list, tech_list)
+        plot_volume(company_list, stock_list)
         print("- Volume plot saved")
         
         calculate_moving_average(company_list)
@@ -186,11 +186,11 @@ def main_analysis(company_list, tech_list):
         analyze_daily_returns(company_list)
         print("- Daily returns plot saved")
         
-        tech_rets = plot_correlation_analysis(tech_list)
+        tech_rets = plot_correlation_analysis(stock_list)
         if not tech_rets.empty:
             print("- Correlation analysis plots saved")
         
-        plot_candlestick_charts(company_list, tech_list)
+        plot_candlestick_charts(company_list, stock_list)
         print("- Candlestick charts saved")
         
         print("\nAll analysis plots have been saved to the 'results' directory.")

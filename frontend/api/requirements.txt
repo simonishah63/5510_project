@@ -3,3 +3,6 @@ numpy>=1.21.2
 yfinance>=0.2.36
 Flask==2.0.1
 Flask-CORS==3.0.10
+scikit-learn>=0.24.2
+matplotlib>=3.4.3
+tensorflow>=2.6.0
